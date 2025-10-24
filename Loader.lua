@@ -14,9 +14,7 @@
 
 getgenv().AbysallHubSettings = {
   Repository = "https://raw.githubusercontent.com/bocaj111004/AbysallHubNew/refs/heads//main/",
-  LibrarySelection = "Obsidian",
-  Title = "Abysall Hub",
-  DiscordInvite = "https://discord.gg/DXJNkSwje3",
+ SelectedLibrary = "Obsidian",
   DPIScale = 100,
   ExecutorSupport = {},
  GameName = "Placeholder"
