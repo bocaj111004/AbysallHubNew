@@ -18,7 +18,8 @@ getgenv().AbysallHub = {
   Title = "Abysall Hub",
   DiscordInvite = "https://discord.gg/DXJNkSwje3",
   DPIScale = 100,
-  ExecutorSupport = {}
+  ExecutorSupport = {},
+ GameName = "Placeholder"
 }
 AbysallHub.ExecutorSupport = loadstring(game:HttpGet(AbysallHub.Repository .. "/Components/ExecutorSupport.lua"))()
 local LocalPlayer = game:GetService("Players").LocalPlayer
@@ -34,5 +35,7 @@ if ExecutorSupported == false then
   return
 end
 local LoaderData = loadstring(game:HttpGet(AbysallHub.Repository .. "/Misc/LoaderData.lua"))()
+local NameData = loadstring(game:HttpGet(AbysallHub.Repository .. "/Misc/LoaderData.lua"))()
 local SelectedLoader = LoaderData[game.GameId] or LoaderData[0]
+AbysallHub.GameName = NameData[SelectedLoader]
 loadstring(game:HttpGet(AbysallHub.Repository .. "Places/" .. SelectedLoader .. "/Loader.lua"))()
