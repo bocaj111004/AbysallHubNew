@@ -12,7 +12,7 @@
                      \______/  
 ]]
 
-getgenv().AbysallHub = {
+getgenv().AbysallHubSettings = {
   Repository = "https://raw.githubusercontent.com/bocaj111004/AbysallHubNew/refs/heads//main/",
   LibrarySelection = "Obsidian",
   Title = "Abysall Hub",
@@ -21,7 +21,7 @@ getgenv().AbysallHub = {
   ExecutorSupport = {},
  GameName = "Placeholder"
 }
-AbysallHub.ExecutorSupport = loadstring(game:HttpGet(AbysallHub.Repository .. "/Components/ExecutorSupport.lua"))()
+AbysallHubSettings.ExecutorSupport = loadstring(game:HttpGet(AbysallHubSettings.Repository .. "/Components/ExecutorSupport.lua"))()
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local RequiredFunctions = {"writefile", "delfile", "readfile", "isfile", "listfiles", "makefolder", "delfolder", "isfolder", "cloneref"}
 local ExecutorSupported = true
@@ -34,8 +34,8 @@ if ExecutorSupported == false then
   LocalPlayer:Kick("Your executor doesn't support Abysall Hub.\nTry looking for executors on trustworthy sites such as whatexpsare.online or voxlis.net!")
   return
 end
-local LoaderData = loadstring(game:HttpGet(AbysallHub.Repository .. "/Misc/LoaderData.lua"))()
-local NameData = loadstring(game:HttpGet(AbysallHub.Repository .. "/Misc/LoaderData.lua"))()
+local LoaderData = loadstring(game:HttpGet(AbysallHubSettings.Repository .. "/Misc/LoaderData.lua"))()
+local NameData = loadstring(game:HttpGet(AbysallHubSettings.Repository .. "/Misc/LoaderData.lua"))()
 local SelectedLoader = LoaderData[game.GameId] or LoaderData[0]
-AbysallHub.GameName = NameData[SelectedLoader]
-loadstring(game:HttpGet(AbysallHub.Repository .. "Places/" .. SelectedLoader .. "/Loader.lua"))()
+AbysallHubSettings.GameName = NameData[SelectedLoader]
+loadstring(game:HttpGet(AbysallHubSettings.Repository .. "Places/" .. SelectedLoader .. "/Loader.lua"))()
