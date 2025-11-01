@@ -31,6 +31,7 @@ if ExecutorSupported == false then
 end
 local LoaderData = loadstring(game:HttpGet(AbysallHubSettings.Repository .. "/Misc/LoaderData.lua"))()
 local NameData = loadstring(game:HttpGet(AbysallHubSettings.Repository .. "/Misc/LoaderData.lua"))()
+local ESP = loadstring(game:HttpGet(AbysallHubSettings.Repository .. "/Components/ESP.lua"))()
 local SelectedLoader = LoaderData[game.GameId] or LoaderData[0]
 AbysallHubSettings.GameName = NameData[SelectedLoader]
 loadstring(game:HttpGet(AbysallHubSettings.Repository .. "Places/" .. SelectedLoader .. "/Loader.lua"))()
