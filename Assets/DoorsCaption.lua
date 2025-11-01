@@ -1,4 +1,5 @@
 return function(Text, PlaySound)
+	    local CaptionValue = Instance.new("NumberValue")
         local LocalPlayer = game:GetService("Players").LocalPlayer
         local TweenService = game:GetService("TweenService")
 		local MainUI = LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("MainUI")
