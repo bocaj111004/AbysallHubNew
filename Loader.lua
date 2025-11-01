@@ -21,7 +21,7 @@ local LocalPlayer = game:GetService("Players").LocalPlayer
 local RequiredFunctions = {"writefile", "delfile", "readfile", "isfile", "listfiles", "makefolder", "delfolder", "isfolder", "cloneref"}
 local ExecutorSupported = true
 for Index, Name in pairs(RequiredFunctions) do
-if not AbysallHub.ExecutorSupport[Name] then
+if not AbysallHubSettings.ExecutorSupport[Name] then
     ExecutorSupported = false
   end
 end
