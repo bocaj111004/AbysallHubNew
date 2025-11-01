@@ -1,7 +1,7 @@
 return function(Text, PlaySound)
   local LocalPlayer = game:GetService("Players").LocalPlayer
 local TweenService = game:GetService("TweenService")
-		local MainUI = LocalPlayer.PlayerGui:WaitForChild("PlayerGui"):WaitForChild("MainUI")
+		local MainUI = LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("MainUI")
 		local Caption = MainUI:WaitForChild("MainFrame"):WaitForChild("Caption"):Clone()
 		local CaptionSound = MainUI:WaitForChild("Initiator"):WaitForChild("Main_Game"):WaitForChild("Reminder"):WaitForChild("Caption")
 		for i,Child in pairs(MainUI:GetChildren()) do
