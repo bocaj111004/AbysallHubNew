@@ -17,9 +17,9 @@ getgenv().AbysallHubSettings = {
 	DiscordInvite = "https://discord.gg/DXJNkSwje3",
 	SelectedLibrary = "Obsidian",
 	GameName = "Placeholder",
+	ExecutorSupport = loadstring(game:HttpGet(AbysallHubSettings.Repository .. "/Components/ExecutorSupport.lua"))()
 	Repository = "https://raw.githubusercontent.com/bocaj111004/AbysallHubNew/refs/heads/main/"
 }
-AbysallHubSettings.ExecutorSupport = loadstring(game:HttpGet(AbysallHubSettings.Repository .. "/Components/ExecutorSupport.lua"))()
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local RequiredFunctions = {"writefile", "delfile", "readfile", "isfile", "listfiles", "makefolder", "delfolder", "isfolder", "cloneref"}
 local ExecutorSupported = true
