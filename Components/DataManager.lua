@@ -26,6 +26,12 @@ end
 end
 
 function DataManager:LoadData()
+if not isfolder("AbysallHub") then
+    makefolder("AbysallHub")
+end
+if not isfolder("AbysallHub/DataManager") then
+    makefolder("AbysallHub/DataManager")
+end
 DataManager:CheckFile("SelectedLibrary")
 DataManager:CheckFile("DIPScale")
 DataManager:CheckFile("AutoExecute")
