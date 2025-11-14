@@ -13,11 +13,16 @@ local ConsoleMessage = [[
                      /$$  | $$                                                                
                     |  $$$$$$/                                                                
                      \______/                                                                 
-                                                                                                            
-Starting Executor Test...   
+                                                                                                           
+✅ Function passed its test, and works as intended
+⚠️ Function is defined, but is not working
+⛔ Function is not defined
+⏺️ Function test was skipped
+
+Starting Test...
 
 ]];
-local ExecutorSupport = {getgenv=false,identifyexecutor=false,writefile=false,isfile=false,readfile=false,loadfile=false,listfiles=false,delfile=false,appendfile=false,makefolder=false,isfolder=false,delfolder=false,fireproximityprompt=false,require=false,hookmetamethod=false,isnetworkowner=false,request=false,cloneref=false,gethui=false,newcclosure=false,firetouchinterest=false,replicatesignal=false,getnamecallmethod=false,getrunningscripts=false,getloadedmodules=false,hookfunction=false,isfunctionhooked=false,restorefunction=false,isexecutorclosure=false,getrawmetatable=false,setrawmetatable=false,setreadonly=false,isreadonly=false,toclipboard=false,["Drawing"]=false,queue_on_teleport=false,firesignal=false,getconnections=false,gethiddenproperty=false,sethiddenproperty=false,getgc=false,loadstring=false,fireclickdetector=false,getinstances=false,getnilinstances=false,setthreadidentity=false,getthreadidentity=false};
+local ExecutorSupport = {getgenv=false,identifyexecutor=false,writefile=false,isfile=false,readfile=false,loadfile=false,listfiles=false,delfile=false,appendfile=false,makefolder=false,isfolder=false,delfolder=false,fireproximityprompt=false,require=false,hookmetamethod=false,isnetworkowner=false,request=false,cloneref=false,gethui=false,newcclosure=false,firetouchinterest=false,replicatesignal=false,getnamecallmethod=false,hookfunction=false,getrawmetatable=false,setrawmetatable=false,setreadonly=false,isreadonly=false,toclipboard=false,["Drawing"]=false,queue_on_teleport=false,firesignal=false,getconnections=false,gethiddenproperty=false,sethiddenproperty=false,getgc=false,loadstring=false,fireclickdetector=false,getnilinstances=false,setthreadidentity=false,getthreadidentity=false};
 local SkippedDetectedFunctions = {[0] = true};
 local DetectedFunctions = {"hookmetamethod"}
 local Player = game:GetService("Players").LocalPlayer;
@@ -30,7 +35,7 @@ if getgenv then
 			if (getgenv().ABYSALL_GENV_TEST == "ABYSALL_GENV_TEST_VALUE") then
 				Test1 = true;
 			end
-			
+
 			if (ABYSALL_GENV_TEST and ABYSALL_GENV_TEST  == "ABYSALL_GENV_TEST_VALUE") then
 				Test2 = true;
 			end
@@ -53,21 +58,21 @@ if toclipboard then
 end
 local NewPart = Instance.new("Part");
 NewPart.Transparency = 1;
-NewPart.Size = Vector3.new(100, 100, 100);
+NewPart.Size = Vector3.new(10, 10, 10);
 NewPart.Position = Vector3.new(0, 2500, 0);
 NewPart.Anchored = false;
 NewPart.Parent = workspace;
 local NewPart2 = Instance.new("Part");
 NewPart2.Transparency = 1;
-NewPart2.Size = Vector3.new(100, 100, 100);
-NewPart2.Position = Vector3.new(0, 2500, 0);
+NewPart2.Size = Vector3.new(10, 10, 10);
+NewPart2.Position = Vector3.new(0, 25000, 0);
 NewPart2.Anchored = false;
 NewPart2.Parent = workspace;
 local NewPart3 = Instance.new("Part");
 NewPart3.Transparency = 1;
-NewPart3.Size = Vector3.new(100, 100, 100);
-NewPart3.Position = Vector3.new(0, 2500, 0);
-NewPart3.Anchored = true;
+NewPart3.Size = Vector3.new(10, 10, 10);
+NewPart3.Position = Vector3.new(0, 250000, 0);
+NewPart3.Anchored = false;
 NewPart3.Parent = workspace;
 local NewPrompt = Instance.new("ProximityPrompt");
 NewPrompt.Parent = NewPart;
@@ -318,15 +323,6 @@ function CheckQueueTeleport()
 		end
 	end
 end
-if getinstances then
-	local FirstInstance;
-	local Success, Error = pcall(function()
-		FirstInstance = getinstances()[1];
-	end);
-	if (Success and FirstInstance and (typeof(FirstInstance) == "Instance")) then
-		ExecutorSupport['getinstances'] = true;
-	end
-end
 if getnilinstances then
 	local FirstInstance;
 	local Success, Error = pcall(function()
@@ -336,33 +332,7 @@ if getnilinstances then
 		ExecutorSupport['getnilinstances'] = true;
 	end
 end
-if getrunningscripts then
-	local Test = false
-	local Success, Error = pcall(function()
-		local RunningScripts = getrunningscripts()
-		local TestScript = RunningScripts[1]
-		if typeof(TestScript) == "Instance" and string.find(TestScript.ClassName, "Script") then
-			Test = true
-		end
-	end)
-	if Success and Test == true then
-		ExecutorSupport["getrunningscripts"] = true
-	end
-end
-if getloadedmodules then
-	local Test = false
-	local Success, Error = pcall(function()
-		local LoadedModules = getloadedmodules()
-		local TestModule = LoadedModules[1]
-		if typeof(TestModule) == "Instance" and TestModule.ClassName == "ModuleScript" then
-			Test = true
-		end
-	end)
-	if Success and Test == true then
-		ExecutorSupport["getloadedmodules"] = true
-	end
-end
-	if isnetworkowner then
+if isnetworkowner then
 	local NetworkValue1 = false;
 	local NetworkValue2 = false;
 	local Success1, Error1 = pcall(function()
@@ -375,35 +345,39 @@ end
 		local Test1 = false;
 		local Test2 = false;
 		local Test3 = false;
+		local TestPart4 = Instance.new("Part", workspace)
 		local Success3, Error3 = pcall(function()
-			if (isnetworkowner(Instance.new("Part", workspace)) == true) then
+			if (isnetworkowner(NewPart2) == true) then
 				Test1 = true;
 			end
 			if (isnetworkowner(Instance.new("Part")) ~= true) then
 				Test2 = true;
 			end
-			if (isnetworkowner(NewPart) == true) then
+			if (isnetworkowner(TestPart4) == true) then
 				Test3 = true;
 			end
+				TestPart4:Destroy()
 		end);
+		print(Error3)
 		if (Success3 and (Test1 == true) and (Test2 == true) and (Test3 == true)) then
 			ExecutorSupport['isnetworkowner'] = true;
 		end
+		
 	end
 end
 if request then
 	local Test = false
 	local Success, Error = pcall(function()
 		local response = request({
-			Url = "https://raw.githubusercontent.com/bocaj111004/AbysallHub/refs/heads/main/ExecutorTest.lua",
+			Url = "https://raw.githubusercontent.com/bocaj111004/AbysallHubNew/refs/heads/main/Components/ExecutorSupport.lua",
 			Method = "GET",
 		})
 		if type(response) == "table" then
-		if type(response.Body) == "string" then
-		if response.StatusCode == 200 then
-			Test = true
-		end
-		end
+			if type(response.Body) == "string" then
+				if response.StatusCode == 200 and string.find(response.Body, "replicatesignal") then
+						Test = true
+				end
+			end
 		end
 	end)
 	if Success and Test == true then
@@ -435,45 +409,6 @@ if hookfunction then
 		ExecutorSupport['hookfunction'] = true;
 	end
 end
-if isfunctionhooked then
-	local Test1 = false
-	local Test2 = false
-	local Success, Error = pcall(function()
-		if isfunctionhooked(TestFunction) then
-			Test1 = true
-		end
-		if not isfunctionhooked(Player.Kick) then
-			Test2 = true
-		end
-	end);
-	if (Success and (TestFunction() == "hooked")) then
-		ExecutorSupport['isfunctionhooked'] = true;
-	end
-end
-if restorefunction and ExecutorSupport["hookfunction"] then
-	local Success, Error = pcall(function()
-		restorefunction(TestFunction);
-	end);
-	if (Success and (TestFunction() == "not hooked")) then
-		ExecutorSupport['restorefunction'] = true;
-	end
-end
-if isexecutorclosure then
-	local Test1 = false
-	local Test2 = false
-	local Success, Error = pcall(function()
-		local Testfunction = function() end
-		if isexecutorclosure(TestFunction) then
-			Test1 = true;
-		end
-		if not isexecutorclosure(Player.Kick) then
-			Test2 = true;
-		end
-	end);
-	if (Success and Test1 == true and Test2 == true) then
-		ExecutorSupport['isexecutorclosure'] = true;
-	end
-end
 --[[if setfpscap then
 	local function GetFPS()
 		return math.floor(1 / game:GetService("RunService").RenderStepped:Wait());
@@ -498,19 +433,6 @@ if getthreadidentity then
 		ThreadIdentity = getthreadidentity();
 	end);
 	local Test = true;
-	if ((getthreadidentity() > 2) and (game:GetService("CoreGui") == nil)) then
-		Test = false;
-	end
-	if (getthreadidentity() >= 8) then
-		local Success, Error = pcall(function()
-			local OldID = Player.UserId;
-			Player.UserId = 1;
-			Player.UserId = OldID;
-		end);
-		if not Success then
-			Test = false;
-		end
-	end
 	if (Success and (typeof(ThreadIdentity) == "number") and (ThreadIdentity ~= 0) and (Test == true)) then
 		ExecutorSupport['getthreadidentity'] = true;
 	end
@@ -549,10 +471,16 @@ if cloneref then
 	end
 end
 if gethui then
-	if ((gethui() ~= nil) and (typeof(gethui()) == "Instance") and (gethui() ~= game:GetService("CoreGui")) and (gethui().Parent ~= nil)) then
-		if (gethui():IsA("CoreGui") or ((game:GetService("CoreGui") ~= nil) and gethui():IsDescendantOf(game:GetService("CoreGui")))) then
-			ExecutorSupport['gethui'] = true;
+	local Test = false
+	local Success, Error = pcall(function()
+		local TestUI = Instance.new("ScreenGui", gethui())
+		if TestUI.Parent ~= game:GetService("CoreGui") then
+			Test = true
 		end
+		TestUI:Destroy()
+	end)
+	if Success and Test == true then
+		ExecutorSupport["gethui"] = true
 	end
 end
 local LoadstringPassed = false
@@ -583,30 +511,38 @@ if firesignal then
 end
 local GetConnectionsPassed = false
 if getconnections then
-	local Test1 = false
-	local Test2 = false
 	local Success, Error = pcall(function()
 		local TestPart = Instance.new("Part", workspace)
 		local TestConnection = TestPart.ChildAdded:Connect(function()
-			GetConnectionsPassed = true
+			if GetConnectionsPassed == true then
+				GetConnectionsPassed = false
+			else
+				GetConnectionsPassed = true
+			end
 		end)
-        local Connections = getconnections(TestPart.ChildAdded);
-		if typeof(Connections) == "table" then
-			Test1 = true
-		end
+		local Connections = getconnections(TestPart.ChildAdded);
 		for i,Connection in pairs(Connections) do
 			Connection:Fire()
+			Connection:Disable()
+			local TestPart2 = Instance.new("Part", TestPart)
+			Connection:Enable()
 		end
 		TestConnection:Disconnect()
+			TestPart:Destroy()
 	end);
+	
 end
 if gethiddenproperty then
-	local Property;
-	local Success, Error = pcall(function()
-		Property = gethiddenproperty(NewPart, "NetworkIsSleeping");
+	local Property1;
+	local Property2
+	local Success1, Error1 = pcall(function()
+		Property1 = gethiddenproperty(NewPart, "NetworkIsSleeping");
 	end);
-	if (Success and (Property ~= nil)) then
-		if (typeof(Property) == "boolean") and Property == false then
+	local Success2, Error2 = pcall(function()
+		Property2 = gethiddenproperty(NewPart, "ABYSALL_FAKE_PROPERTY");
+	end);
+	if (Success1 and (Property1 ~= nil)) and not Success2 then
+		if (typeof(Property1) == "boolean") and Property1 == false then
 			ExecutorSupport['gethiddenproperty'] = true;
 		end
 	end
@@ -626,10 +562,9 @@ if sethiddenproperty and ExecutorSupport['gethiddenproperty'] then
 end
 if firetouchinterest then
 	local Success, Error = pcall(function()
-		task.wait();
-		firetouchinterest(NewPart, NewPart2, 1);
-		task.wait();
-		firetouchinterest(NewPart, NewPart2, 0);
+		firetouchinterest(NewPart, NewPart3, true or 1);
+		task.wait()
+		firetouchinterest(NewPart, NewPart3, false or 0);
 	end);
 end
 if writefile then
@@ -751,7 +686,7 @@ if workspace.Name == "ABYSALL_LOADSTRING_TEST" and LoadstringPassed == true then
 	workspace.Name = OldWorkspaceName;
 	ExecutorSupport['loadstring'] = true;
 end
-task.wait();
+task.wait(0.25);
 if ExecutorSupport['getgenv'] then
 	getgenv().ExecutorSupport = ExecutorSupport;
 end
@@ -761,21 +696,23 @@ NewPart3:Destroy();
 TestEvent:Destroy();
 local Successes = 0;
 local TotalTests = 0;
-local ExistingFunctions = {getgenv=getgenv,identifyexecutor=identifyexecutor,writefile=writefile,isfile=isfile,readfile=readfile,loadfile=loadfile,listfiles=listfiles,delfile=delfile,appendfile=appendfile,makefolder=makefolder,isfolder=isfolder,delfolder=delfolder,fireproximityprompt=fireproximityprompt,require=require,hookmetamethod=hookmetamethod,isnetworkowner=isnetworkowner,request=request,cloneref=cloneref,gethui=gethui,newcclosure=newcclosure,firetouchinterest=firetouchinterest,replicatesignal=replicatesignal,getnamecallmethod=getnamecallmethod,getrunningscripts=getrunningscripts,getloadedmodules=getloadedmodules,hookfunction=hookfunction,isfunctionhooked=isfunctionhooked,restorefunction=restorefunction,isexecutorclosure=isexecutorclosure,getrawmetatable=getrawmetatable,setrawmetatable=setrawmetatable,setreadonly=setreadonly,isreadonly=isreadonly,toclipboard=toclipboard,Drawing=(Drawing and Drawing.new),queue_on_teleport=queue_on_teleport,firesignal=firesignal,getconnections=getconnections,getscripthash=getscripthash,getscriptbytecode=getscriptbytecode,gethiddenproperty=gethiddenproperty,sethiddenproperty=sethiddenproperty,getgc=getgc,loadstring=loadstring,fireclickdetector=fireclickdetector,getinstances=getinstances,getnilinstances=getnilinstances,getthreadidentity=getthreadidentity,setthreadidentity=setthreadidentity};
+local ExistingFunctions = {getgenv=getgenv,identifyexecutor=identifyexecutor,writefile=writefile,isfile=isfile,readfile=readfile,loadfile=loadfile,listfiles=listfiles,delfile=delfile,appendfile=appendfile,makefolder=makefolder,isfolder=isfolder,delfolder=delfolder,fireproximityprompt=fireproximityprompt,require=require,hookmetamethod=hookmetamethod,isnetworkowner=isnetworkowner,request=request,cloneref=cloneref,gethui=gethui,newcclosure=newcclosure,firetouchinterest=firetouchinterest,replicatesignal=replicatesignal,getnamecallmethod=getnamecallmethod,hookfunction=hookfunction,getrawmetatable=getrawmetatable,setrawmetatable=setrawmetatable,setreadonly=setreadonly,isreadonly=isreadonly,toclipboard=toclipboard,Drawing=(Drawing and Drawing.new),queue_on_teleport=queue_on_teleport,firesignal=firesignal,getconnections=getconnections,gethiddenproperty=gethiddenproperty,sethiddenproperty=sethiddenproperty,getgc=getgc,loadstring=loadstring,fireclickdetector=fireclickdetector,getnilinstances=getnilinstances,getthreadidentity=getthreadidentity,setthreadidentity=setthreadidentity};
 for Name, Result in pairs(ExecutorSupport) do
 	TotalTests = TotalTests + 1;
 	if (Result == true) then
-		ConsoleMessage = ConsoleMessage .. "[✅] " .. Name .. "\n";
+		ConsoleMessage = ConsoleMessage .. "✅ " .. Name .. "\n";
 	elseif table.find(DetectedFunctions, Name) and SkippedDetectedFunctions[game.PlaceId] or table.find(DetectedFunctions, Name) and SkippedDetectedFunctions[game.GameId] then
-		ConsoleMessage = ConsoleMessage .. "[⏺️] " .. Name .. "\n";
+		ConsoleMessage = ConsoleMessage .. "⏺️ " .. Name .. "\n";
+	elseif ExistingFunctions[Name] and Result == false then
+		ConsoleMessage = ConsoleMessage .. "⚠️ " .. Name .. "\n";
 	else
-		ConsoleMessage = ConsoleMessage .. "[⛔] " .. Name .. "\n";
+		ConsoleMessage = ConsoleMessage .. "⛔ " .. Name .. "\n";
 	end
 	if (Result == true) then
 		Successes = Successes + 1;
 	end
 end
-ConsoleMessage = ConsoleMessage .. "\nExecutor: " .. ((ExecutorSupport['identifyexecutor'] and identifyexecutor()) or "N/A");
+ConsoleMessage = ConsoleMessage .. "\nExecutor: " .. ((ExecutorSupport['identifyexecutor'] and identifyexecutor()) or "Unknown");
 ConsoleMessage = ConsoleMessage .. "\nTests passed: " .. Successes .. "/" .. TotalTests
 ConsoleMessage = ConsoleMessage .. "\nTime taken: " .. (math.floor(tonumber(tick() - Time) * 1000) / 1000) .. " seconds";
 local FinalScore = math.round((Successes / TotalTests) * 100);
