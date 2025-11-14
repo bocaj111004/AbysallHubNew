@@ -16,7 +16,8 @@ getgenv().AbysallHubSettings = {
 	Name = "Abysall Hub",
 	DiscordInvite = "https://discord.gg/DXJNkSwje3",
 	SelectedLibrary = "Obsidian",
-	GameName = "Placeholder"
+	GameName = "Placeholder",
+	Repository = "https://raw.githubusercontent.com/bocaj111004/AbysallHubNew/refs/heads/main/"
 }
 AbysallHubSettings.ExecutorSupport = loadstring(game:HttpGet(AbysallHubSettings.Repository .. "/Components/ExecutorSupport.lua"))()
 local LocalPlayer = game:GetService("Players").LocalPlayer
