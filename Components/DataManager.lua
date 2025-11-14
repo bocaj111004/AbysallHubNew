@@ -30,3 +30,6 @@ DataManager:CheckFile("SelectedLibrary")
 DataManager:CheckFile("DIPScale")
 DataManager:CheckFile("AutoExecute")
 end
+
+DataManager:LoadData()
+return DataManager
