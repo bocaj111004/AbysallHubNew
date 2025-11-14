@@ -12,12 +12,12 @@ function DataManager:GetData(Data)
 end
 
 function DataManager:SaveData(Data)
-  DataManager.Data[Data] = Data
-  writefile("AbysallHub/DataManager/" .. Data .. ".txt", Data)
+DataManager.Data[Data] = Data
+writefile("AbysallHub/DataManager/" .. Data .. ".txt", Data)
 end
 
 function DataManager:CheckFile(Name)
-if type(readfile("AbysallHub/DataManager/" .. Name .. ".txt")) ~= "string" then
+if isfile("AbysallHub/DataManager/" .. Name .. ".txt") then
     writefile("AbysallHub/DataManager/" .. Name .. ".txt", DataManager.Data[Name])
     DataManager.Data[Name] = DataManager.Data[Name]
 else
@@ -26,10 +26,7 @@ end
 end
 
 function DataManager:LoadData()
-  DataManager:CheckFile("SelectedLibrary")
-  DataManager:CheckFile("DIPScale")
-  DataManager:CheckFile("AutoExecute")
+DataManager:CheckFile("SelectedLibrary")
+DataManager:CheckFile("DIPScale")
+DataManager:CheckFile("AutoExecute")
 end
-
-DataManager:LoadData()
-return DataManager
