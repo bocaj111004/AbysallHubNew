@@ -6,7 +6,7 @@ DataManager.Data = {
 }
 
 function DataManager:GetData(Name)
-    local SavedData = readfile("AbysallHub/DataManager/" .. Data .. ".txt")
+    local SavedData = readfile("AbysallHub/DataManager/" .. Name .. ".txt")
     return SavedData or DataManager.Data[Name]
 end
 
