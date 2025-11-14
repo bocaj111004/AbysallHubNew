@@ -1,19 +1,18 @@
 local DataManager = {}
-
 DataManager.Data = {
     SelectedLibrary = "Obsidian",
     DPIScale = "100",
     AutoExecute = "false"
 }
 
-function DataManager:GetData(Data)
+function DataManager:GetData(Name)
     local SavedData = readfile("AbysallHub/DataManager/" .. Data .. ".txt")
-    return SavedData or DataManager.Data[Data]
+    return SavedData or DataManager.Data[Name]
 end
 
-function DataManager:SaveData(Data)
-DataManager.Data[Data] = Data
-writefile("AbysallHub/DataManager/" .. Data .. ".txt", Data)
+function DataManager:SaveData(Name, Data)
+DataManager.Data[Name] = Data
+writefile("AbysallHub/DataManager/" .. Name .. ".txt", Data)
 end
 
 function DataManager:CheckFile(Name)
