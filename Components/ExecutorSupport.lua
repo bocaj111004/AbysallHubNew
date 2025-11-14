@@ -15,9 +15,9 @@ local ConsoleMessage = [[
                      \______/                                                                 
                                                                                                            
 ✅ Function passed its test, and works as intended
-⚠️ Function is defined, but is not working
-⛔ Function is not defined
-⏺️ Function test was skipped
+⚠️ Function exists, but is failed its test
+⛔ Function does not exist on your executor
+⏺️ Function was skipped, porbably to avoid game detections
 
 Starting Test...
 
