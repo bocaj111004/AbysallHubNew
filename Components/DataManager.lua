@@ -17,7 +17,7 @@ writefile("AbysallHub/DataManager/" .. Data .. ".txt", Data)
 end
 
 function DataManager:CheckFile(Name)
-if isfile("AbysallHub/DataManager/" .. Name .. ".txt") then
+if not isfile("AbysallHub/DataManager/" .. Name .. ".txt") then
     writefile("AbysallHub/DataManager/" .. Name .. ".txt", DataManager.Data[Name])
     DataManager.Data[Name] = DataManager.Data[Name]
 else
