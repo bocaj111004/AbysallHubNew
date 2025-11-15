@@ -32,7 +32,7 @@ if not isfolder("AbysallHub/DataManager") then
     makefolder("AbysallHub/DataManager")
 end
 DataManager:CheckFile("SelectedLibrary")
-DataManager:CheckFile("DIPScale")
+DataManager:CheckFile("DPIScale")
 DataManager:CheckFile("AutoExecute")
 end
 
