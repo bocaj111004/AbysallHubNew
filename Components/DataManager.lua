@@ -3,7 +3,7 @@ DataManager.Data = {
     SelectedLibrary = "Obsidian",
     DPIScale = "100",
     AutoExecute = "false"
-    TotalExectuions = "0"
+    TotalExecutions = "0"
 }
 
 function DataManager:GetData(Name)
