@@ -2,7 +2,7 @@ local DataManager = {}
 DataManager.Data = {
     SelectedLibrary = "Obsidian",
     DPIScale = "100",
-    AutoExecute = "false"
+    AutoExecute = "false",
     TotalExecutions = "0"
 }
 
