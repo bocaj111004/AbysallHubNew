@@ -356,13 +356,13 @@ if isnetworkowner then
 			if (isnetworkowner(TestPart4) == true) then
 				Test3 = true;
 			end
-				TestPart4:Destroy()
+			TestPart4:Destroy()
 		end);
 		print(Error3)
 		if (Success3 and (Test1 == true) and (Test2 == true) and (Test3 == true)) then
 			ExecutorSupport['isnetworkowner'] = true;
 		end
-		
+
 	end
 end
 if request then
@@ -375,7 +375,7 @@ if request then
 		if type(response) == "table" then
 			if type(response.Body) == "string" then
 				if response.StatusCode == 200 and string.find(response.Body, "replicatesignal") then
-						Test = true
+					Test = true
 				end
 			end
 		end
@@ -528,9 +528,9 @@ if getconnections then
 			Connection:Enable()
 		end
 		TestConnection:Disconnect()
-			TestPart:Destroy()
+		TestPart:Destroy()
 	end);
-	
+
 end
 if gethiddenproperty then
 	local Property1;
@@ -717,5 +717,4 @@ ConsoleMessage = ConsoleMessage .. "\nTests passed: " .. Successes .. "/" .. Tot
 ConsoleMessage = ConsoleMessage .. "\nTime taken: " .. (math.floor(tonumber(tick() - Time) * 1000) / 1000) .. " seconds";
 local FinalScore = math.round((Successes / TotalTests) * 100);
 ConsoleMessage = ConsoleMessage .. "\nScore: " .. FinalScore .. "%";
-print(ConsoleMessage);
 return ExecutorSupport
