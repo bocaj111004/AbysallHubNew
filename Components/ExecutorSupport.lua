@@ -217,7 +217,7 @@ end
 function CheckRequire()
 	local Module
 	local Success, Error = pcall(function()
-		local Module = game:GetService("CorePackages")._GlobalPackageVersions;
+		Module = game:GetService("CorePackages")._GlobalPackageVersions;
 		local LoadedModule = require(Module)
 	end);
 		if not Success and typeof(Module) == "Instance" then
