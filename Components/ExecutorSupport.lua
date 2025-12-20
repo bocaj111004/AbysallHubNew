@@ -1,3 +1,4 @@
+
 local Time = tick();
 local ConsoleMessage = [[
 
@@ -22,7 +23,7 @@ local ConsoleMessage = [[
 Starting Test...
 
 ]];
-local ExecutorSupport = {getgenv=false,identifyexecutor=false,writefile=false,isfile=false,readfile=false,listfiles=false,delfile=false,appendfile=false,makefolder=false,isfolder=false,delfolder=false,fireproximityprompt=false,require=false,hookmetamethod=false,isnetworkowner=false,request=false,cloneref=false,newcclosure=false,firetouchinterest=false,replicatesignal=false,getnamecallmethod=false,hookfunction=false,getrawmetatable=false,setreadonly=false,["Drawing"]=false,queue_on_teleport=false,firesignal=false,getconnections=false,gethiddenproperty=false,sethiddenproperty=false,getgc=false,loadstring=false,fireclickdetector=false,getnilinstances=false};
+local ExecutorSupport = {getgenv=false,identifyexecutor=false,writefile=false,isfile=false,readfile=false,loadfile=false,listfiles=false,delfile=false,appendfile=false,makefolder=false,isfolder=false,delfolder=false,fireproximityprompt=false,require=false,hookmetamethod=false,isnetworkowner=false,request=false,cloneref=false,gethui=false,newcclosure=false,firetouchinterest=false,replicatesignal=false,getnamecallmethod=false,hookfunction=false,getrawmetatable=false,setrawmetatable=false,setreadonly=false,isreadonly=false,toclipboard=false,["Drawing"]=false,queue_on_teleport=false,firesignal=false,getconnections=false,gethiddenproperty=false,sethiddenproperty=false,getgc=false,loadstring=false,fireclickdetector=false,getnilinstances=false,setthreadidentity=false,getthreadidentity=false};
 local SkippedDetectedFunctions = {[0] = true};
 local DetectedFunctions = {"hookmetamethod"}
 local Player = game:GetService("Players").LocalPlayer;
@@ -215,29 +216,31 @@ function CheckGetGC()
 	end
 end
 function CheckRequire()
-	local Module
+	local Module = Player.PlayerScripts.PlayerModule;
+	local Test = false;
 	local Success, Error = pcall(function()
-		Module = game:GetService("CorePackages")._GlobalPackageVersions;
-		local LoadedModule = require(Module)
+		local LoadedModule = require(Module);
+		local OldFunction = LoadedModule.GetControls;
+		LoadedModule.GetControls = function()
+			return "ABYSALL_REQUIRE_TEST";
+		end;
+		if (LoadedModule:GetControls() == "ABYSALL_REQUIRE_TEST") then
+			Test = true;
+			LoadedModule.GetControls = OldFunction;
+		end
 	end);
-		if not Success and typeof(Module) == "Instance" then
+	if ExecutorSupport['getthreadidentity'] then
+		if (Success and (Test == true) and (getthreadidentity() > 3)) then
 			ExecutorSupport['require'] = true;
 		end
+	end
 end
 function CheckGetNameCallMethod()
-	if (not ExecutorSupport['hookmetamethod'] or not getnamecallmethod) then
+	if not getnamecallmethod then
 		return;
 	end
-	local method;
-	local ref;
-	ref = hookmetamethod(game, "__namecall", function(...)
-		if not method then
-			method = getnamecallmethod();
-		end
-		return ref(...);
-	end);
 	game:GetService("Lighting");
-	if (method == "GetService") then
+	if (getnamecallmethod() == "GetService") then
 		ExecutorSupport['getnamecallmethod'] = true;
 	end
 end
@@ -253,6 +256,19 @@ function CheckGetRawMetaTable()
 		end
 	end
 end
+function CheckSetRawMetaTable()
+	if setrawmetatable and ExecutorSupport["getrawmetatable"] then
+		local metatable1 = {__metatable="ABYSALL_METATABLE_TEST_1"};
+		local metatable2 = {__metatable="ABYSALL_METATABLE_TEST_2"};
+		local object = setmetatable({}, metatable1);
+		local Success, Error = pcall(function()
+			setrawmetatable(object, metatable2);
+		end);
+		if (Success and (getrawmetatable(object) == metatable2)) then
+			ExecutorSupport['setrawmetatable'] = true;
+		end
+	end
+end
 function CheckSetReadOnly()
 	if setreadonly then
 		local object = {success=false};
@@ -263,6 +279,27 @@ function CheckSetReadOnly()
 		end);
 		if Success then
 			ExecutorSupport['setreadonly'] = true;
+		end
+	end
+end
+function CheckIsReadOnly()
+	if isreadonly then
+		local Test1 = false;
+		local Test2 = false;
+		local object = {success=false};
+		local Success1, Error1 = pcall(function()
+			if (isreadonly(object) == false) then
+				Test1 = true;
+			end
+		end);
+		table.freeze(object);
+		local Success2, Error2 = pcall(function()
+			if (isreadonly(object) == true) then
+				Test2 = true;
+			end
+		end);
+		if (Success1 and Success2 and (Test1 == true) and (Test2 == true)) then
+			ExecutorSupport['isreadonly'] = true;
 		end
 	end
 end
@@ -383,6 +420,28 @@ end
 		end);
 	end
 end]]
+if getthreadidentity then
+	local ThreadIdentity = 0;
+	local Success, Error = pcall(function()
+		ThreadIdentity = getthreadidentity();
+	end);
+	local Test = true;
+	if (Success and (typeof(ThreadIdentity) == "number") and (ThreadIdentity ~= 0) and (Test == true)) then
+		ExecutorSupport['getthreadidentity'] = true;
+	end
+end
+if (setthreadidentity and ExecutorSupport['getthreadidentity']) then
+	local ThreadIdentity = getthreadidentity();
+	local Success, Error = pcall(function()
+		setthreadidentity(1);
+	end);
+	if (Success and (typeof(ThreadIdentity) == "number") and (getthreadidentity() == 1) and (ThreadIdentity ~= 1)) then
+		ExecutorSupport['setthreadidentity'] = true;
+	end
+	if Success then
+		setthreadidentity(ThreadIdentity);
+	end
+end
 if clonefunction then
 	local ClonedFunction;
 	local TestFunction = function()
@@ -402,6 +461,19 @@ if cloneref then
 	end);
 	if (Success and (Clone ~= workspace)) then
 		ExecutorSupport['cloneref'] = true;
+	end
+end
+if gethui then
+	local Test = false
+	local Success, Error = pcall(function()
+		local TestUI = Instance.new("ScreenGui", gethui())
+		if TestUI.Parent ~= game:GetService("CoreGui") then
+			Test = true
+		end
+		TestUI:Destroy()
+	end)
+	if Success and Test == true then
+		ExecutorSupport["gethui"] = true
 	end
 end
 local LoadstringPassed = false
@@ -512,11 +584,23 @@ if readfile then
 		ExecutorSupport['readfile'] = true;
 	end
 end
-if listfiles then
+if loadfile and ExecutorSupport["writefile"] then
 	local Success, Error = pcall(function()
-		listfiles("");
+		writefile("ABYSALL_TEST_FILE_3", "game:GetService('Stats').Name = 'ABYSALL_LOADFILE_TEST'")
+		local Chunk = loadfile("ABYSALL_TEST_FILE_3")
+		Chunk()
 	end);
-	if (Success and (typeof(listfiles("")) == "table") and (#listfiles("") > 0)) then
+	if (Success and (game:GetService("Stats").Name == "ABYSALL_LOADFILE_TEST")) then
+		ExecutorSupport['loadfile'] = true;
+		game:GetService("Stats").Name = "Stats"
+	end
+end
+if listfiles then
+	local filelist
+	local Success, Error = pcall(function()
+		filelist = listfiles("");
+	end);
+	if (filelist and Success and typeof(filelist) == "table") then
 		ExecutorSupport['listfiles'] = true;
 	end
 end
@@ -571,7 +655,7 @@ if (delfile and ExecutorSupport['readfile']) then
 	end);
 	if Success1 then
 		local Success2, Error2 = pcall(function()
-			readfile("ABYSALL_TEST_FILE");
+			readfile("ABYSALL_TEST_FILE");	
 		end);
 		if (Success1 and not Success2) then
 			ExecutorSupport['delfile'] = true;
@@ -581,7 +665,9 @@ end
 CheckNewCClosure();
 CheckGetGC();
 CheckGetRawMetaTable();
+CheckSetRawMetaTable();
 CheckSetReadOnly();
+CheckIsReadOnly();
 CheckDrawing();
 CheckQueueTeleport();
 CheckHookMetaMethod();
@@ -595,38 +681,20 @@ if workspace.Name == "ABYSALL_LOADSTRING_TEST" and LoadstringPassed == true then
 	ExecutorSupport['loadstring'] = true;
 end
 task.wait(0.25);
+if ExecutorSupport['getgenv'] then
+	getgenv().ExecutorSupport = ExecutorSupport;
+end
 NewPart:Destroy();
 NewPart2:Destroy();
 NewPart3:Destroy();
 TestEvent:Destroy();
 local Successes = 0;
 local TotalTests = 0;
-local ExistingFunctions = {getgenv=getgenv,identifyexecutor=identifyexecutor,writefile=writefile,isfile=isfile,readfile=readfile,listfiles=listfiles,delfile=delfile,appendfile=appendfile,makefolder=makefolder,isfolder=isfolder,delfolder=delfolder,fireproximityprompt=fireproximityprompt,require=require,hookmetamethod=hookmetamethod,isnetworkowner=isnetworkowner,request=request,cloneref=cloneref,newcclosure=newcclosure,firetouchinterest=firetouchinterest,replicatesignal=replicatesignal,getnamecallmethod=getnamecallmethod,hookfunction=hookfunction,getrawmetatable=getrawmetatable,setreadonly=setreadonly,Drawing=(Drawing and Drawing.new),queue_on_teleport=queue_on_teleport,firesignal=firesignal,getconnections=getconnections,gethiddenproperty=gethiddenproperty,sethiddenproperty=sethiddenproperty,getgc=getgc,loadstring=loadstring,fireclickdetector=fireclickdetector,getnilinstances=getnilinstances};
-for Name, Result in pairs(ExecutorSupport) do
-	TotalTests = TotalTests + 1;
-	if (Result == true) then
-		ConsoleMessage = ConsoleMessage .. "✅ " .. Name .. "\n";
-	elseif table.find(DetectedFunctions, Name) and SkippedDetectedFunctions[game.PlaceId] or table.find(DetectedFunctions, Name) and SkippedDetectedFunctions[game.GameId] then
-		ConsoleMessage = ConsoleMessage .. "⏺️ " .. Name .. "\n";
-	elseif ExistingFunctions[Name] and Result == false then
-		ConsoleMessage = ConsoleMessage .. "⚠️ " .. Name .. "\n";
-	else
-		ConsoleMessage = ConsoleMessage .. "⛔ " .. Name .. "\n";
-	end
-	if (Result == true) then
-		Successes = Successes + 1;
-	end
-end
+local ExistingFunctions = {getgenv=getgenv,identifyexecutor=identifyexecutor,writefile=writefile,isfile=isfile,readfile=readfile,loadfile=loadfile,listfiles=listfiles,delfile=delfile,appendfile=appendfile,makefolder=makefolder,isfolder=isfolder,delfolder=delfolder,fireproximityprompt=fireproximityprompt,require=require,hookmetamethod=hookmetamethod,isnetworkowner=isnetworkowner,request=request,cloneref=cloneref,gethui=gethui,newcclosure=newcclosure,firetouchinterest=firetouchinterest,replicatesignal=replicatesignal,getnamecallmethod=getnamecallmethod,hookfunction=hookfunction,getrawmetatable=getrawmetatable,setrawmetatable=setrawmetatable,setreadonly=setreadonly,isreadonly=isreadonly,toclipboard=toclipboard,Drawing=(Drawing and Drawing.new),queue_on_teleport=queue_on_teleport,firesignal=firesignal,getconnections=getconnections,gethiddenproperty=gethiddenproperty,sethiddenproperty=sethiddenproperty,getgc=getgc,loadstring=loadstring,fireclickdetector=fireclickdetector,getnilinstances=getnilinstances,getthreadidentity=getthreadidentity,setthreadidentity=setthreadidentity};
+
 ConsoleMessage = ConsoleMessage .. "\nExecutor: " .. ((ExecutorSupport['identifyexecutor'] and identifyexecutor()) or "Unknown");
 ConsoleMessage = ConsoleMessage .. "\nTests passed: " .. Successes .. "/" .. TotalTests
 ConsoleMessage = ConsoleMessage .. "\nTime taken: " .. (math.floor(tonumber(tick() - Time) * 1000) / 1000) .. " seconds";
 local FinalScore = math.round((Successes / TotalTests) * 100);
 ConsoleMessage = ConsoleMessage .. "\nScore: " .. FinalScore .. "%";
-if ExecutorSupport['getgenv'] then
-	getgenv().ExecutorSupport = ExecutorSupport;
-	getgenv().ExecutorSupport_Executor = ((ExecutorSupport['identifyexecutor'] and identifyexecutor()) or "Unknown");
-	getgenv().ExecutorSupport_TimeTaken = (math.floor(tonumber(tick() - Time) * 1000) / 1000)
-	getgenv().ExecutorSupport_TestsPassed = Successes .. "/" .. TotalTests
-	getgenv().ExecutorSupport_Score = FinalScore .. "%"
-end
 return ExecutorSupport
