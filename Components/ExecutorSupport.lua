@@ -681,12 +681,6 @@ if workspace.Name == "ABYSALL_LOADSTRING_TEST" and LoadstringPassed == true then
 	ExecutorSupport['loadstring'] = true;
 end
 task.wait(0.25);
-if ExecutorSupport['getgenv'] then
-	getgenv().ExecutorSupport = ExecutorSupport;
-	getgenv().ExecutorSupport_Executor = ((ExecutorSupport['identifyexecutor'] and identifyexecutor()) or "Unknown")
-	getgenv().ExecutorSupport_TimeTaken = (math.floor(tonumber(tick() - Time) * 1000) / 1000)
-	getgenv().ExecutorSupport_TestsPassed = Successes .. "/" .. TotalTests
-end
 NewPart:Destroy();
 NewPart2:Destroy();
 NewPart3:Destroy();
@@ -700,4 +694,10 @@ ConsoleMessage = ConsoleMessage .. "\nTests passed: " .. Successes .. "/" .. Tot
 ConsoleMessage = ConsoleMessage .. "\nTime taken: " .. (math.floor(tonumber(tick() - Time) * 1000) / 1000) .. " seconds";
 local FinalScore = math.round((Successes / TotalTests) * 100);
 ConsoleMessage = ConsoleMessage .. "\nScore: " .. FinalScore .. "%";
+if ExecutorSupport['getgenv'] then
+	getgenv().ExecutorSupport = ExecutorSupport;
+	getgenv().ExecutorSupport_Executor = ((ExecutorSupport['identifyexecutor'] and identifyexecutor()) or "Unknown")
+	getgenv().ExecutorSupport_TimeTaken = (math.floor(tonumber(tick() - Time) * 1000) / 1000)
+	getgenv().ExecutorSupport_TestsPassed = Successes .. "/" .. TotalTests
+end
 return ExecutorSupport
