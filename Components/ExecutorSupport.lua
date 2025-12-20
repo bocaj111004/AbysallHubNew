@@ -683,6 +683,9 @@ end
 task.wait(0.25);
 if ExecutorSupport['getgenv'] then
 	getgenv().ExecutorSupport = ExecutorSupport;
+	getgenv().ExecutorSupport_Executor = ((ExecutorSupport['identifyexecutor'] and identifyexecutor()) or "Unknown")
+	getgenv().ExecutorSupport_TimeTaken = (math.floor(tonumber(tick() - Time) * 1000) / 1000)
+	getgenv().ExecutorSupport_TestsPassed = Successes .. "/" .. TotalTests
 end
 NewPart:Destroy();
 NewPart2:Destroy();
