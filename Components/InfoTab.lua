@@ -1,6 +1,6 @@
 return function(Tab)
 	local Global = getgenv()
-	
+
 	local UserInfo = Tab:AddLeftGroupbox("User Info")
 	local UserIcon = UserInfo:AddImage("UserIcon", {
 		Image = Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420),
@@ -11,7 +11,7 @@ return function(Tab)
 		ScaleType = Enum.ScaleType.Fit,
 		Height = 200,
 	})
-	
+
 	UserInfo:AddLabel("User: " .. LocalPlayer.DisplayName .. " (" .. LocalPlayer.Name .. ")")
 	UserInfo:AddLabel("Total Executions: " .. shared.DataManager:GetData("TotalExecutions"))
 	UserInfo:AddButton({
@@ -20,7 +20,7 @@ return function(Tab)
 		Tooltip = 'Copies a script that others can run in their executor to join your server.',
 		Func = function()
 			local Success, Error = pcall(function()
-			toclipboard('game:GetService("TeleportService"):TeleportToPlaceInstance(' .. game.PlaceId .. ', "' .. game.JobId .. '", game:GetService("Players").LocalPlayer)')
+				toclipboard('game:GetService("TeleportService"):TeleportToPlaceInstance(' .. game.PlaceId .. ', "' .. game.JobId .. '", game:GetService("Players").LocalPlayer)')
 			end)
 			if Success then
 				Library:Notify("Link copied!")
@@ -36,12 +36,23 @@ return function(Tab)
 	ExecutorInfo:AddLabel("Time Taken: " .. Global.ExecutorSupport_TimeTaken .. " seconds")
 	ExecutorInfo:AddLabel("Tests Passed: " .. Global.ExecutorSupport_TestsPassed)
 	
+	local Failed = {}
+	local Passed = {}
+	
 	for Index, Value in pairs(Global.ExecutorSupport) do
 		if Value then
-			FunctionSupport:AddLabel("✅ " .. Index)
+			table.insert(Passed, Index)
 		else
-			FunctionSupport:AddLabel("❌ " .. Index)
+			table.insert(Failed, Index)
 		end
+	end
+
+	for Index, Value in pairs(Passed) do
+		FunctionSupport:AddLabel("✅ " .. Value)
+		task.wait()
+	end
+	for Index, Value in pairs(Failed) do
+		FunctionSupport:AddLabel("❌ " .. Value)
 		task.wait()
 	end
 end
