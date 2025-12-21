@@ -25,7 +25,7 @@ local TweenService = CloneReference(game:GetService("TweenService"))
 
 local Camera = CloneReference(game:GetService("Workspace").CurrentCamera)
 local LocalPlayer = Players.LocalPlayer
-local Character = LocalPlayer.Character or LocalPlayer.CharacerAdded:Wait()
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 local Humanoid = Character:FindFirstChild("Humanoid")
 
 LocalPlayer.CharacterAdded:Connect(function(NewCharacter)
