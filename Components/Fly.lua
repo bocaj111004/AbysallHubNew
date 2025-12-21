@@ -92,7 +92,7 @@ function Fly:SetSpeed(Number)
 end
 function Fly:Unload()
 	Fly:Disable()
-	CharacterConnection:Disconect()
+	CharacterConnection:Disconnect()
 	MainConnection:Disconnect()
 	Fly.Body:Destroy()
 	Fly.Gyro:Destroy()
