@@ -51,6 +51,7 @@ return function(Tab)
 		FunctionSupport:AddLabel("✅ " .. Value)
 		task.wait()
 	end
+	task.wait()
 	for Index, Value in pairs(Failed) do
 		FunctionSupport:AddLabel("❌ " .. Value)
 		task.wait()
