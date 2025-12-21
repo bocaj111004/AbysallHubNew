@@ -1,6 +1,15 @@
 return function(Tab)
 	local Global = getgenv()
+	local CloneReference = function(Object)
+		if cloneref and typeof(cloneref) == "function" then
+			return cloneref(Object)
+		else
+			return Object
+		end
+	end
 
+	local Players = CloneReference(game:GetService("Players"))
+	local LocalPlayer = Players.LocalPlayer
 	local UserInfo = Tab:AddLeftGroupbox("User Info")
 	local UserIcon = UserInfo:AddImage("UserIcon", {
 		Image = Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420),
