@@ -19,6 +19,20 @@ local CloneReference = function(Object)
 	end
 end
 
+function GenerateRandomString()
+	local Result = {}
+	local Chars = "1234567890abcdef"
+	for i = 1,32,1 do
+		local Index = math.random(1,#Chars)
+		local Char = Chars:sub(Index, Index)
+		table.insert(Result, Char)
+	end
+	return table.concat(Result)
+end
+
+Fly.Body.Name =  GenerateRandomString()
+Fly.Gyro.Name = GenerateRandomString()
+
 local Players = CloneReference(game:GetService("Players"))
 local RunService = CloneReference(game:GetService("RunService"))
 local TweenService = CloneReference(game:GetService("TweenService"))
@@ -28,7 +42,7 @@ local LocalPlayer = Players.LocalPlayer
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 local Humanoid = Character:FindFirstChild("Humanoid")
 
-LocalPlayer.CharacterAdded:Connect(function(NewCharacter)
+local CharacterConnection = LocalPlayer.CharacterAdded:Connect(function(NewCharacter)
 Character = NewCharacter
 Humanoid = NewCharacter:WaitForChild("Humanoid")
 end)
@@ -46,7 +60,7 @@ function GetVelocity()
 	return Velocity.unit;
 end
 
-RunService.RenderStepped:Connect(function()
+local MainConnection = RunService.RenderStepped:Connect(function()
 	if Fly.Enabled == true then
 		local Velocity = Vector3.zero;
 		Velocity = GetVelocity()
@@ -70,10 +84,17 @@ function Fly:Disable()
 	Fly.Enabled = false
 	Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
 	Humanoid.PlatformStand = false
-	Humanoid:CahngeState(Enum.HumanoidStateType.Jumping)
+	Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 	Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, true)
 end
 function Fly:SetSpeed(Number)
 	Fly.Speed = Number
+end
+function Fly:Unload()
+	Fly:Disable()
+	CharacterConnection:Disconect()
+	MainConnection:Disconnect()
+	Fly.Body:Destroy()
+	Fly.Gyro:Destroy()
 end
 return Fly
